@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Producto</title>
+    <link rel="stylesheet" href="../public/styles.css">
+</head>
+<body>
+
+     <h2>Agregar producto</h2>
+
+    <form action="/products" method="post">
+        <div class="form-group">
+            <label for="title">Nombre Producto</label>
+            <input type="text" id="title" name="title">
+        </div>
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <input type="text" id="description" name="description">
+        </div>
+        <div class="form-group">
+            <label for="code">Código</label>
+            <input type="text" id="code" name="code">
+        </div>
+        <div class="form-group">
+            <label for="price">Precio</label>
+            <input type="number" id="price" name="price">
+        </div>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <input type="text" id="status" name="status">
+        </div>
+        <div class="form-group">
+            <label for="stock">Stock</label>
+            <input type="number" id="stock" name="stock">
+        </div>
+        <div class="form-group">
+            <label for="categoria">Categoría</label>
+            <input type="text" id="categoria" name="categoria">
+        </div>
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
+
+
+--<!esta conectividad revisarla en la parte del chat >--
+
+    <h2>Eliminar un producto</h2>
+
+<div>
+     <form action="/products/:pid" method="post">
+     <label for="pid">Ingrese el ID a eliminar</label>
+     <input type="number" id="pid" name="pid">  
+     <input type="hidden" name="_method" value="DELETE">
+     <button type="submit">Enviar</button>
+    </form>
+
+</div>
+
+    <title>Listado de Productos en Tiempo Real</title>
+</head>
+<body>
+    <h1>Listado de Productos en Tiempo Real</h1>
+    <ul id="product-list">
+        {{#each products}}
+        <li data-id="{{this.pid}}">
+         {{this.pid}} - {{this.title}} - ${{this.price}}
+        </li>
+        {{/each}}
+    </ul>
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="../public/js/index.js"></script>
+</html>
