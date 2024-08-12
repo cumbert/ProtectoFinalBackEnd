@@ -2,6 +2,7 @@ import express  from "express"
 import fs from "fs"
 import { fileURLToPath } from 'url'
 import path from 'path'
+import cartsModel from '../../models/carts.model.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,6 +24,7 @@ router.get("/carts",(req,res) =>{
 })
 
 
+//clase 16, uso de populate
 router.get("/carts/:cid",(req,res) =>{    
     const cid = parseInt(req.params.cid)      
     const carts = readCarts()
@@ -36,11 +38,12 @@ router.get("/carts/:cid",(req,res) =>{
 
 })
 
+/*Borrar
 router.post("/carts",(req,res) =>{
     const { products } = req.body
     const carts = readCarts()
     const cid = carts.length + 1
-    const newCart = { cid, products : [] }
+    const newCart = { cid,user,email, products : [] } //este es el formato que pasó el profe
     
     carts.push(newCart)
     writeCarts(carts)
@@ -48,9 +51,24 @@ router.post("/carts",(req,res) =>{
     res.json({massage: "Carrito agregado"})
     })
 
+    */
+
     let writeCarts = (carts) => {
         fs.writeFileSync(cartsFilePath, JSON.stringify(carts, null, 2))    
     }
+
+
+
+router.post("/carts", async (req,res) =>{
+    let {user, email, products} = req.body
+    if(!user || !email || !products){
+        res.send({ status: "error", error: "Faltan parámetros"})  
+    }
+
+    let result = await cartsModel.create({user, email, products})
+    res.send({result: "success", payload: result})
+
+})
 
  router.post("/carts/:cid/product/:pid",(req,res) =>{ 
     const cid = parseInt(req.params.cid) 

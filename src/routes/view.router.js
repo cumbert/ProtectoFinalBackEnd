@@ -3,6 +3,7 @@ import fs from 'fs'
 import { fileURLToPath } from 'url'
 import path from 'path'
 import { socketServer } from '../app.js'
+import productsModel from '../models/products.model.js'
 
 const router = express.Router()
 
@@ -21,7 +22,7 @@ const readProducts = () => {
 }
 
 router.get('/',(req,res) => {
-    res.render('index')    
+    res.render('index',{})    
 })
 
 router.get('/home', (req, res) => {
@@ -29,11 +30,12 @@ router.get('/home', (req, res) => {
     res.render('home', { products })
 })
 
+
 router.get('/realtimeproducts', (req, res) => {
-    const products = readProducts(); // Obtener los productos actuales
+    const products = readProducts()  // Obtener los productos actuales      
     res.render('realTimeProducts', { products })
 
-    // Después de agregar, actualizar o eliminar un producto
+     //Después de agregar, actualizar o eliminar un producto
     socketServer.emit('productUpdate', readProducts())
 })
 

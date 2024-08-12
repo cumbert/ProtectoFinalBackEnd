@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <title>Listado de Productos en Tiempo Real</title>
+</head>
+<body>
+    <h1>Listado de Productos en Tiempo Real</h1>
+
+    <ul id="product-list"></ul>
+
+    {{#if isValid}}
+    <div>
+        {{#each products}}
+        <div>
+            <p>Titulo: {{this.title}} &nbsp; Precio: {{this.price}}</p>
+        </div>
+        <br />
+        {{/each}}
+    </div>
+    <br />
+    <div>
+        
+            {{#if hasPrevPage}}
+        <a href={{this.prevLink}}>Anterior</a>
+        {{/if}}
+        &nbsp;
+        {{this.page}}
+        &nbsp;
+        {{#if hasNextPage}}
+        <a href={{this.nextLink}}>Siguiente </a>
+        {{/if}}
+    </div> 
+    {{else}}
+    <h3>No hay productos para mostrar</h3>
+    {{/if}}
+        </ul>
+        
+    <!--<ul >
+        {{#each products}}
+        <li data-id="{{this.pid}}">
+         {{this.pid}} - {{this.title}} - ${{this.price}}
+        </li>
+        {{/each}}
+    </ul>-->
+</body>
+
+
+</body>
+</html>

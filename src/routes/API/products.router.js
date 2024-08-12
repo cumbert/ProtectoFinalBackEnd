@@ -1,20 +1,20 @@
 import express from "express"
-import fs from "fs"
-import { fileURLToPath } from 'url'
-import path from 'path'
+//import fs from "fs"
+//import { fileURLToPath } from 'url'
+//import path from 'path'
 //import Router from "express"
 //import { socketServer } from "../../app.js"
 import productsModel from "../../models/products.model.js"
 
 
+const router = express.Router()
+
 // Convierte la URL del módulo actual a una ruta de archivo
-const __filename = fileURLToPath(import.meta.url)
+/*const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
  
 
 const productsFilePath = path.join(__dirname, '../../data/products.json')
-
-const router = express.Router()
 
 const readProducts = () => {
     if (!fs.existsSync(productsFilePath)) {
@@ -23,7 +23,7 @@ const readProducts = () => {
    const data = fs.readFileSync(productsFilePath, 'utf-8')
    return JSON.parse(data)
  }
-
+*/
  /*BORRAR
 router.get('/products', (req, res) => {
     res.json(readProducts());
@@ -33,18 +33,42 @@ router.get('/products', (req, res) => {
 
 router.get("/products",async (req,res) => {
     try {
-        let products = await productsModel.find()
-        res.send({result: "success", payload: products})
+        //BORRAR let products = await productsModel.find()
+        //LINEAS PARA EL PAGINADO
+        //const { limit , page, sort} = query.params //los datos que me mandan por parametros
+        /*let products = await productsModel.paginate(
+            {status: true},
+            {limit: 5, page: 2}
+        )
+       console.log(products)
+*/
+       //res.send({result: "success", payload: products})    
+
+       let page = parseInt(req.query.page)
+       if(!page) page = 1;
+       let result = await productsModel.paginate({}, { page, limit: 5})
+       result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}` : '';
+       result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}` : '';
+       result.isValid = !(page >=0 || page > result.totalPages)    
+       res.render('realTimeProducts', { result })
+        
+
     } catch (error){
         console.error(error)
     } 
 })
 
+
+
 //REEMPLAZAR
+/*
 router.get("/products/:pid",(req,res) =>{    
     const pid = parseInt(req.params.pid) 
     const products =  readProducts() 
     const productoEncontrado = products.find( (product) => product.pid === pid )    
+
+
+
     if(productoEncontrado){
         res.json(productoEncontrado)
     }else {
@@ -52,6 +76,7 @@ router.get("/products/:pid",(req,res) =>{
     }
 
 })
+    */
 
 /*BORRAR
 router.post('/products', (req, res) => {    
@@ -82,7 +107,10 @@ router.post('/products',async (req,res) => {
 
     let result = await productsModel.create({title, description, code, price, status, stock})
     res.send({result: "success", payload: result})
+
 })
+
+
 
 
 /*Borrar

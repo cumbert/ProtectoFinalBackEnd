@@ -38,6 +38,8 @@ app.use("/", productsRouter)
 app.use("/", cartsRouter)
 app.use('/',viewRouter)
 
+
+//conexión a la base
 mongoose.connect("mongodb+srv://admin:Coder2024@cluster0.8vmpp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
  .then(()=>{
     console.log("Conectado a la base de datos")
@@ -45,6 +47,8 @@ mongoose.connect("mongodb+srv://admin:Coder2024@cluster0.8vmpp.mongodb.net/?retr
  .catch(error=>{
     console.log("Error al conectar con la base de datos.",error)
  })
+
+
 const httpServer = app.listen(PORT, () => console.log(`Server runinng on PORT: ${PORT}`))
 
 const socketServer = new Server(httpServer)

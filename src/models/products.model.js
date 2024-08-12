@@ -1,17 +1,19 @@
 import mongoose from "mongoose"
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 const productsCollection = "products"
 
 const productSchema = new mongoose.Schema({
-    title:{type: String, required: true, max:100},
-    description:{type: String, required: true, max:200},
-    code:{type: String, required: true, max:100},
-    price:{type: Number, required: true, max: 40},
-    status:{type: Boolean, default: true, required: true, max: 4},
-    stock:{type: Number, required: true, max:10}
+    title:{type: String, required: true},
+    description:{type: String, required: true},
+    code:{type: String, required: true},
+    price:{type: Number, required: true},
+    status:{type: Boolean, required: true},
+    stock:{type: Number, required: true}
 
 })
 
-const userModel = mongoose.model(productsCollection, productSchema)
+productSchema.plugin(mongoosePaginate)
+const productsModel = mongoose.model(productsCollection, productSchema)
 
-export default userModel
+export default productsModel
